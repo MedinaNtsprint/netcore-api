@@ -41,7 +41,6 @@ namespace APICore.API
         {
             services.AddSwaggerGen(options =>
             {
-                // define swagger docs and other options
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "API Core",
@@ -54,8 +53,8 @@ namespace APICore.API
                     Description = "Enter JWT Bearer authorization token",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
-                    Scheme = "bearer", // must be lowercase!!!
-                    BearerFormat = "Bearer {token}",
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
                     Reference = new OpenApiReference
                     {
                         Id = JwtBearerDefaults.AuthenticationScheme,
@@ -64,16 +63,14 @@ namespace APICore.API
                 };
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
-                        // defines scope - without a protocol use an empty array for global scope
-                        { securityScheme, Array.Empty<string>() }
-                    }
-                );
+                {
+                    { securityScheme, Array.Empty<string>() }
+                });
                 var basePath = AppContext.BaseDirectory;
                 var fileName = Path.Combine(basePath, "APICore.API.xml");
                 var fileName2 = Path.Combine(basePath, "APICore.Common.xml");
-                options.IncludeXmlComments(fileName);
-                options.IncludeXmlComments(fileName2);
+                if (File.Exists(fileName)) options.IncludeXmlComments(fileName);
+                if (File.Exists(fileName2)) options.IncludeXmlComments(fileName2);
             });
         }
 

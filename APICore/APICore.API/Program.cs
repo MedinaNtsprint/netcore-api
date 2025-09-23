@@ -21,6 +21,7 @@ using AutoMapper;
 using Microsoft.Extensions.Hosting;
 using APICore.API;
 using Microsoft.Extensions.Configuration;
+using Scalar.AspNetCore;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -70,12 +71,14 @@ app.UseCors();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    // Expose OpenAPI JSON at the conventional route Scalar expects
+    app.MapSwagger("/openapi/{documentName}.json");
+    // Serve Scalar UI
+    app.MapScalarApiReference(options =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Core V1");
+        options.WithTitle("API Core");
+        options.WithTheme(ScalarTheme.Mars);
     });
-    // Swagger UI is enabled for development
 }
 else
 {
