@@ -39,7 +39,8 @@ namespace APICore.API.Controllers
             foreach (var item in report.Entries)
             {
                 var healthCheckItem = _mapper.Map<HealthCheckResponse>(item.Value);
-                healthCheckItem.ServiceName = item.Key;
+                // HealthCheckResponse is a positional record; use 'with' to create a copy with ServiceName set
+                healthCheckItem = healthCheckItem with { ServiceName = item.Key };
                 list.Add(healthCheckItem);
             }
 

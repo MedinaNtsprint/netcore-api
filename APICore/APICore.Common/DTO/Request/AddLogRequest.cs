@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace APICore.Common.DTO.Request
 {
-    public class AddLogRequest
-    {        
-        public int EventType { get; set; }
-        public int LogType { get; set; }
-        public int UserId { get; set; }
-        public string Description { get; set; }
-        public string App { get; set; }
-        public string Module { get; set; }       
-    }
+    public record AddLogRequest(int EventType, int LogType, int UserId, string Description, string App, string Module);
 }

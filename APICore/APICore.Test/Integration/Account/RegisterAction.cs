@@ -60,16 +60,15 @@ namespace APICore.Tests.Integration.Account
     public async Task SuccessfullyRegisterShouldReturnCreated()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = @"carlos@itguy.com",
-                FullName = "Carlos Perez",
-                Gender = 0,
-                Phone = "+53 12345678",
-                Birthday = DateTime.Now,
-                Password = @"S3cretP@$$",
-                ConfirmationPassword = @"S3cretP@$$"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Carlos Perez",
+                Password: @"S3cretP@$$",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: @"carlos@itguy.com",
+                Birthday: DateTime.Now,
+                Phone: "+53 12345678",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
@@ -86,16 +85,15 @@ namespace APICore.Tests.Integration.Account
     public async Task EmptyEmailShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = "",
-                FullName = "Pepe Perez",
-                Gender = 0,
-                Phone = "+53 12345678",
-                Birthday = DateTime.Now,
-                Password = @"S3cretP@$$",
-                ConfirmationPassword = @"S3cretP@$$"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Pepe Perez",
+                Password: @"S3cretP@$$",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: "",
+                Birthday: DateTime.Now,
+                Phone: "+53 12345678",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
@@ -109,10 +107,15 @@ namespace APICore.Tests.Integration.Account
     public async Task EmailInUseShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = "pepe@itguy.com"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Any Name",
+                Password: @"S3cretP@$$",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: "pepe@itguy.com",
+                Birthday: DateTime.Now,
+                Phone: "+53 00000000",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
@@ -126,16 +129,15 @@ namespace APICore.Tests.Integration.Account
     public async Task EmptyPasswordShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = @"pepe2@itguy.com",
-                FullName = "Pepe Perez",
-                Gender = 0,
-                Phone = "+53 12345678",
-                Birthday = DateTime.Now,
-                Password = "",
-                ConfirmationPassword = @"S3cretP@$$"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Pepe Perez",
+                Password: "",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: @"pepe2@itguy.com",
+                Birthday: DateTime.Now,
+                Phone: "+53 12345678",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
@@ -149,16 +151,15 @@ namespace APICore.Tests.Integration.Account
     public async Task SmallPasswordShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = "pepe2@itguy.com",
-                FullName = "Pepe Perez",
-                Gender = 0,
-                Phone = "+53 12345678",
-                Birthday = DateTime.Now,
-                Password = "S3cr",
-                ConfirmationPassword = @"S3cretP@$$"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Pepe Perez",
+                Password: "S3cr",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: "pepe2@itguy.com",
+                Birthday: DateTime.Now,
+                Phone: "+53 12345678",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
@@ -172,16 +173,15 @@ namespace APICore.Tests.Integration.Account
     public async Task PasswordDoesntMatchShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeUserRequest = new SignUpRequest
-            {
-                Email = "pepe2@itguy.com",
-                FullName = "Pepe Perez",
-                Gender = 0,
-                Phone = "+53 12345678",
-                Birthday = DateTime.Now,
-                Password = @"Z3cretP@$$",
-                ConfirmationPassword = @"S3cretP@$$"
-            };
+            var fakeUserRequest = new SignUpRequest(
+                FullName: "Pepe Perez",
+                Password: @"Z3cretP@$$",
+                ConfirmationPassword: @"S3cretP@$$",
+                Email: "pepe2@itguy.com",
+                Birthday: DateTime.Now,
+                Phone: "+53 12345678",
+                Gender: 0
+            );
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);

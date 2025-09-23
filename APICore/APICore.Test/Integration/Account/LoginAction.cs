@@ -75,11 +75,10 @@ namespace APICore.Tests.Integration.Account
     public async Task SuccessfullyLoginShouldReturnOk()
         {
             // ARRANGE
-            var fakeLoginRequest = new LoginRequest
-            {
-                Email = "carlos@itguy.com",
-                Password = "S3cretP@$$"
-            };
+            var fakeLoginRequest = new LoginRequest(
+                Email: "carlos@itguy.com",
+                Password: "S3cretP@$$"
+            );
 
             var httpContext = new DefaultHttpContext();
             using var context = new CoreDbContext(ContextOptions);
@@ -104,11 +103,10 @@ namespace APICore.Tests.Integration.Account
     public async Task EmptyEmailOnLoginShouldReturnBadRequestException()
         {
             // ARRANGE
-            var fakeLoginRequest = new LoginRequest
-            {
-                Email = "",
-                Password = "S3cretP@$$"
-            };
+            var fakeLoginRequest = new LoginRequest(
+                Email: "",
+                Password: "S3cretP@$$"
+            );
 
             var httpContext = new DefaultHttpContext();
             using var context = new CoreDbContext(ContextOptions);
@@ -130,11 +128,10 @@ namespace APICore.Tests.Integration.Account
     public async Task WrongPasswordShouldReturnUnauthorizedException()
         {
             // ARRANGE
-            var fakeLoginRequest = new LoginRequest
-            {
-                Email = "carlos@itguy.com",
-                Password = "Z3cretP@$$"
-            };
+            var fakeLoginRequest = new LoginRequest(
+                Email: "carlos@itguy.com",
+                Password: "Z3cretP@$$"
+            );
 
             var httpContext = new DefaultHttpContext();
             using var context = new CoreDbContext(ContextOptions);

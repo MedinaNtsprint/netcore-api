@@ -245,7 +245,7 @@ namespace APICore.Services.Impls
             {
                 Email = suRequest.Email,
                 FullName = suRequest.FullName,
-                BirthDate = suRequest.Birthday,
+                BirthDate = suRequest.Birthday ?? DateTime.UtcNow,
                 Phone = suRequest.Phone,
                 Password = passwordHash,
                 CreatedAt = DateTime.UtcNow,
@@ -425,7 +425,7 @@ namespace APICore.Services.Impls
             }
 
             user.FullName = updateProfile.FullName;
-            user.BirthDate = updateProfile.Birthday;
+            user.BirthDate = updateProfile.Birthday ?? user.BirthDate;
             user.Phone = updateProfile.Phone;
             user.ModifiedAt = DateTime.UtcNow;
             user.Gender = (GenderEnum)updateProfile.Gender;

@@ -122,11 +122,10 @@ namespace APICore.Tests.Integration.Account
                 }
             };
 
-            var fakeChangeAccountStatus = new ChangeAccountStatusRequest
-            {
-                Identity = "identity-4",
-                Active = true
-            };
+            var fakeChangeAccountStatus = new ChangeAccountStatusRequest(
+                Identity: "identity-4",
+                Active: true
+            );
 
             // ACT
             var taskResult = (OkResult)await accountController.ChangeAccountStatus(fakeChangeAccountStatus);
@@ -162,11 +161,10 @@ namespace APICore.Tests.Integration.Account
                 }
             };
 
-            var fakeChangeAccountStatus = new ChangeAccountStatusRequest
-            {
-                Identity = "identity-5",
-                Active = true
-            };
+            var fakeChangeAccountStatus = new ChangeAccountStatusRequest(
+                Identity: "identity-5",
+                Active: true
+            );
 
             // ACT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.AccountDeactivatedForbiddenException>(() => accountController.ChangeAccountStatus(fakeChangeAccountStatus));

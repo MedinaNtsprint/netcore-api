@@ -25,6 +25,7 @@ using Scalar.AspNetCore;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    .WriteTo.Console()
     .WriteTo.File("logs/apicore-.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
@@ -55,12 +56,25 @@ builder.Services.AddAutoMapper(typeof(Program));
 // Register services with DI patterns for .NET 8
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(x => new BlobServiceClient(builder.Configuration.GetConnectionString("Azure")));
+// Blob storage registration: only create BlobServiceClient when an Azure connection string is configured.
+var azureConnection = builder.Configuration.GetConnectionString("Azure");
+if (!string.IsNullOrWhiteSpace(azureConnection) && !azureConnection.Contains("[YOUR_ACCOUNT_NAME]") && !azureConnection.Contains("[ROOT_PATH]"))
+{
+    builder.Services.AddScoped(x => new BlobServiceClient(azureConnection));
+    builder.Services.AddTransient<IStorageService, StorageService>();
+}
+else
+{
+    // Register a no-op storage implementation for local development/testing when Azure is not configured
+    builder.Services.AddTransient<IStorageService, APICore.Services.Impls.NoOpStorageService>();
+    builder.Services.AddSingleton<BlobServiceClient>(sp => null);
+}
+
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ISettingService, SettingService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ILogService, LogService>();
-builder.Services.AddTransient<IStorageService, StorageService>();
+// Note: IStorageService registration is conditional above. Do not register StorageService unconditionally
 
 var app = builder.Build();
 

@@ -3,18 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APICore.Common.DTO.Request
 {
-    public class UpdateProfileRequest
+    public record UpdateProfileRequest(
+        [property: Required] string FullName,
+        [property: Required][property: Range(0, 1)] int Gender,
+        DateTime? Birthday,
+        string Phone
+    )
     {
-        [Required]
-        public string FullName { get; set; }
-
-        [Required]
-        [Range(0, 1)]
-        public int Gender { get; set; }
-
-        [Required]
-        public DateTime Birthday { get; set; }
-
-        public string Phone { get; set; }
-    }
+        public UpdateProfileRequest() : this(default!, default, default, default!) { }
+    };
 }

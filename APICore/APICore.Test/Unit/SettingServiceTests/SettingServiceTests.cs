@@ -102,11 +102,10 @@ namespace APICore.Test.Unit.SettingServiceTests
             const string key = "TestKeyNew";
             const string value = "TestValueNew";
 
-            var request = new SettingRequest
-            {
-                Key = key,
-                Value = value
-            };
+            var request = new SettingRequest(
+                Key: key,
+                Value: value
+            );
 
             await using var context = new CoreDbContext(ContextOptions);
             var service = new SettingService(new UnitOfWork(context), _localizerMock);
@@ -134,11 +133,10 @@ namespace APICore.Test.Unit.SettingServiceTests
             await using var context = new CoreDbContext(ContextOptions);
             var service = new SettingService(new UnitOfWork(context), _localizerMock);
             
-            var request = new SettingRequest
-            {
-                Key = existingKey,
-                Value = newValue
-            };
+            var request = new SettingRequest(
+                Key: existingKey,
+                Value: newValue
+            );
 
             // Act
             await service.SetSettingAsync(request);

@@ -10,26 +10,48 @@ namespace APICore.API.Utils
     {
         public MappingProfiles()
         {
+            // Map User -> UserResponse using positional record constructor
             CreateMap<User, UserResponse>()
-                .ForMember(d => d.StatusId, opts => opts.MapFrom(source => (int)source.Status))
-                .ForMember(d => d.Status, opts => opts.MapFrom(source => source.Status.ToString()))
-                .ForMember(d => d.GenderId, opts => opts.MapFrom(source => (int)source.Gender))
-                .ForMember(d => d.Gender, opts => opts.MapFrom(source => source.Gender.ToString()))
-                ;
+                .ConstructUsing(source => new UserResponse(
+                    source.Id,
+                    source.BirthDate,
+                    source.FullName,
+                    source.Identity,
+                    (int)source.Gender,
+                    source.Gender.ToString(),
+                    source.Email,
+                    source.Phone,
+                    (int)source.Status,
+                    source.Status.ToString(),
+                    source.Avatar,
+                    source.AvatarMimeType
+                ));
 
+            // Map HealthReportEntry -> HealthCheckResponse using constructor; ServiceName is set later in controller
             CreateMap<HealthReportEntry, HealthCheckResponse>()
-                .ForMember(d => d.Description, opts => opts.MapFrom(source => source.Description))
-                .ForMember(d => d.Duration, opts => opts.MapFrom(source => source.Duration.TotalSeconds))
-                .ForMember(d => d.ServiceStatus, opts => opts.MapFrom(source => source.Status == HealthStatus.Healthy ?
-                                                                                HttpStatusCode.OK :
-                                                                                (source.Status == HealthStatus.Degraded ? HttpStatusCode.OK : HttpStatusCode.ServiceUnavailable)))
-                .ForMember(d => d.Exception, opts => opts.MapFrom(source => source.Exception == null ? "" : source.Exception.Message));
+                .ConstructUsing(source => new HealthCheckResponse(
+                    (int)(source.Status == HealthStatus.Healthy
+                        ? HttpStatusCode.OK
+                        : (source.Status == HealthStatus.Degraded ? HttpStatusCode.OK : HttpStatusCode.ServiceUnavailable)),
+                    string.Empty,
+                    source.Description,
+                    source.Exception == null ? string.Empty : source.Exception.Message,
+                    source.Duration.TotalSeconds.ToString()
+                ));
 
+            // Setting maps by name automatically to positional record
             CreateMap<Setting, SettingResponse>();
-            CreateMap<Log, LogResponse>()
-               .ForMember(d => d.LogType, opts => opts.MapFrom(source => source.LogType.ToString()))
-               .ForMember(d => d.EventType, opts => opts.MapFrom(source => source.EventType.ToString()));
 
+            // Map Log -> LogResponse using constructor
+            CreateMap<Log, LogResponse>()
+                .ConstructUsing(source => new LogResponse(
+                    source.Id,
+                    source.EventType.ToString(),
+                    source.LogType.ToString(),
+                    source.CreatedAt,
+                    source.UserId,
+                    source.Description
+                ));
         }
     }
 }
