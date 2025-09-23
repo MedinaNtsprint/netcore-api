@@ -77,6 +77,29 @@ This will start Kestrel on the configured port(s) defined in `Properties/launchS
 
 ## APICore sample_appsettings.json (full fields)
 
+Developer helper script
+-----------------------
+
+There is a small PowerShell helper script in the repository root: `dev.ps1`.
+It provides shortcuts for common tasks and a helper to generate a test JWT key suitable for HS256 (32 bytes).
+
+Examples:
+
+```powershell
+# Restore and build
+./dev.ps1 -RestoreBuild
+
+# Run tests
+./dev.ps1 -RunTests
+
+# Run API
+./dev.ps1 -RunApi
+
+# Generate a 32-byte Base64 JWT key (use the Base64 value in appsettings)
+./dev.ps1 -NewTestJwtKey
+```
+
+
 Is important to note: in the case of Azure, you can use developer tools instead of production environments directly from Azure on your developer machine. To accomplish this you can install the Azure Storage Emulator (or use Azurite). After installing the emulator, replace the Azure connection string with the emulator one shown below.
 
 Install Azure Storage Emulator (or Azurite) and use the development account settings when testing blobs locally.

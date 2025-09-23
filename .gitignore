@@ -358,3 +358,4 @@ MigrationBackup/
 
 # JetBrains Rider project files
 APICore/.idea/
+APICore/APICore.API/appsettings.Development.json
