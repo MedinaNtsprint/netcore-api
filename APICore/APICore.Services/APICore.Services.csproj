@@ -5,15 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.22.0" />
-    <PackageReference Include="DeviceDetector.NET" Version="6.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+  <PackageReference Include="Azure.Storage.Blobs" Version="12.25.0" />
+  <PackageReference Include="DeviceDetector.NET" Version="6.4.6" />
+  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Askmethat.Aspnet.JsonLocalizer" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="rlcx.suid" Version="1.0.1" />
     <PackageReference Include="Sendgrid" Version="9.29.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
-    <PackageReference Include="Wangkanai.Detection" Version="8.0.0" />
+  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
+  <PackageReference Include="Wangkanai.Detection" Version="8.20.0" />
   </ItemGroup>
 
   <ItemGroup>
