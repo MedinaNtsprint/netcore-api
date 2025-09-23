@@ -1,4 +1,4 @@
-﻿using APICore.API.Controllers;
+using APICore.API.Controllers;
 using APICore.Common.DTO.Request;
 using APICore.Data;
 using APICore.Data.Entities;
@@ -72,7 +72,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT
             var taskResult = (ObjectResult)await accountController.Register(fakeUserRequest);
@@ -97,7 +97,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT & ASSERT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.EmptyEmailBadRequestException>(() => accountController.Register(fakeUserRequest));
@@ -119,7 +119,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT & ASSERT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.EmailInUseBadRequestException>(() => accountController.Register(fakeUserRequest));
@@ -141,7 +141,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT & ASSERT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordRequirementsBadRequestException>(() => accountController.Register(fakeUserRequest));
@@ -163,7 +163,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT & ASSERT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordRequirementsBadRequestException>(() => accountController.Register(fakeUserRequest));
@@ -185,7 +185,7 @@ namespace APICore.Tests.Integration.Account
 
             using var context = new CoreDbContext(ContextOptions);
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT & ASSERT
             await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordsDoesntMatchBadRequestException>(() => accountController.Register(fakeUserRequest));

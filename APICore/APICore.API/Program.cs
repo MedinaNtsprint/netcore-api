@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
+using APICore.API.Mappers;
 using Microsoft.Extensions.Hosting;
 using APICore.API;
 using Microsoft.Extensions.Configuration;
@@ -51,7 +51,8 @@ builder.Services.ConfigureHealthChecks(builder.Configuration);
 builder.Services.ConfigureDetection();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(typeof(Program));
+// Register Mapperly mapper
+builder.Services.AddSingleton<IAppMapper, AppMapper>();
 
 // Register services with DI patterns for .NET 8
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();

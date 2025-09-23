@@ -1,5 +1,5 @@
 ﻿using APICore.Common.DTO.Response;
-using AutoMapper;
+using APICore.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +15,9 @@ namespace APICore.API.Controllers
     {
         private readonly HealthCheckService _healthCheckService;
         private readonly HealthCheckOptions _healthCheckOptions;
-        private readonly IMapper _mapper;
+        private readonly IAppMapper _mapper;
 
-        public DiagnosticsController(HealthCheckService healthCheckService, IMapper mapper, HealthCheckOptions healthCheckOptions = null)
+        public DiagnosticsController(HealthCheckService healthCheckService, IAppMapper mapper, HealthCheckOptions healthCheckOptions = null)
         {
             _healthCheckService = healthCheckService ?? throw new ArgumentNullException(nameof(healthCheckService));
 
@@ -38,7 +38,7 @@ namespace APICore.API.Controllers
             var list = new List<HealthCheckResponse>();
             foreach (var item in report.Entries)
             {
-                var healthCheckItem = _mapper.Map<HealthCheckResponse>(item.Value);
+                var healthCheckItem = _mapper.Map(item.Value);
                 // HealthCheckResponse is a positional record; use 'with' to create a copy with ServiceName set
                 healthCheckItem = healthCheckItem with { ServiceName = item.Key };
                 list.Add(healthCheckItem);

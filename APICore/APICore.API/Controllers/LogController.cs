@@ -2,7 +2,7 @@
 using APICore.Common.DTO.Request;
 using APICore.Common.DTO.Response;
 using APICore.Services;
-using AutoMapper;
+using APICore.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,9 +19,9 @@ namespace APICore.API.Controllers
     public class LogController : Controller
     {
         private readonly ILogService _logService;
-        private readonly IMapper _mapper;
+        private readonly IAppMapper _mapper;
 
-        public LogController(ILogService logService, IMapper mapper)
+        public LogController(ILogService logService, IAppMapper mapper)
         {
             _logService = logService ?? throw new ArgumentNullException(nameof(logService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -56,7 +56,7 @@ namespace APICore.API.Controllers
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 
-            var logList = _mapper.Map<IEnumerable<LogResponse>>(result);
+            var logList = _mapper.Map(result);
 
             return Ok(new ApiOkResponse(logList));
            
@@ -94,7 +94,7 @@ namespace APICore.API.Controllers
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 
-            var logList = _mapper.Map<IEnumerable<LogResponse>>(result);
+            var logList = _mapper.Map(result);
 
             return Ok(new ApiOkResponse(logList));
 
@@ -130,7 +130,7 @@ namespace APICore.API.Controllers
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 
-            var logList = _mapper.Map<IEnumerable<LogResponse>>(result);
+            var logList = _mapper.Map(result);
 
             return Ok(new ApiOkResponse(logList));
 

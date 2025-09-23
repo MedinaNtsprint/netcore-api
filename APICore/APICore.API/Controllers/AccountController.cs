@@ -3,7 +3,7 @@ using APICore.API.Utils;
 using APICore.Common.DTO.Request;
 using APICore.Common.DTO.Response;
 using APICore.Services;
-using AutoMapper;
+using APICore.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,11 +21,11 @@ namespace APICore.API.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-        private readonly IMapper _mapper;
+        private readonly IAppMapper _mapper;
         private readonly IWebHostEnvironment _env;
         private readonly IEmailService _emailService;
 
-        public AccountController(IAccountService accountService, IMapper mapper, IEmailService emailService, IWebHostEnvironment env)
+        public AccountController(IAccountService accountService, IAppMapper mapper, IEmailService emailService, IWebHostEnvironment env)
         {
             _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -68,7 +68,7 @@ namespace APICore.API.Controllers
             var result = await _accountService.LoginAsync(loginRequest);
             HttpContext.Response.Headers["Authorization"] = "Bearer " + result.accessToken;
             HttpContext.Response.Headers["RefreshToken"] = result.refreshToken;
-            var user = _mapper.Map<UserResponse>(result.user);
+            var user = _mapper.Map(result.user);
             return Ok(new ApiOkResponse(user));
         }
 
@@ -153,7 +153,7 @@ namespace APICore.API.Controllers
         {
             var loggedUser = User.GetUserIdFromToken();
             var result = await _accountService.UpdateProfileAsync(updateProfile, loggedUser);
-            var user = _mapper.Map<UserResponse>(result);
+            var user = _mapper.Map(result);
 
             return Ok(new ApiOkResponse(user));
         }
@@ -175,7 +175,7 @@ namespace APICore.API.Controllers
                 var principal = await _accountService.GetPrincipalFromExpiredTokenAsync(validateToken.Token);
                 var userId = Convert.ToInt32(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value);
                 var user = await _accountService.GetUserAsync(userId);
-                var mapped = _mapper.Map<UserResponse>(user);
+                var mapped = _mapper.Map(user);
                 return Ok(new ApiOkResponse(mapped));
             }
             else
@@ -215,7 +215,7 @@ namespace APICore.API.Controllers
         {
             var loggedUser = User.GetUserIdFromToken();
             var result = await _accountService.UploadAvatar(file, loggedUser);
-            var user = _mapper.Map<UserResponse>(result);
+            var user = _mapper.Map(result);
             return Ok(new ApiOkResponse(user));
         }
 

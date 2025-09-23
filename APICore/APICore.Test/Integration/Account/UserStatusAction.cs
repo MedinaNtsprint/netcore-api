@@ -1,4 +1,4 @@
-﻿using APICore.API.Controllers;
+using APICore.API.Controllers;
 using APICore.Common.DTO.Request;
 using APICore.Services;
 using APICore.Services.Exceptions;
@@ -114,7 +114,7 @@ namespace APICore.Tests.Integration.Account
             using var context = new CoreDbContext(ContextOptions);
 
             var accountService = new AccountService(Config.Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, DetectionService.Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object)
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -153,7 +153,7 @@ namespace APICore.Tests.Integration.Account
             using var context = new CoreDbContext(ContextOptions);
 
             var accountService = new AccountService(Config.Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, DetectionService.Object, storageService);
-            var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object)
+            var accountController = new AccountController(accountService, new APICore.API.Mappers.AppMapper(), new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object)
             {
                 ControllerContext = new ControllerContext()
                 {

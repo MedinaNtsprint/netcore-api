@@ -2,7 +2,7 @@
 using APICore.Common.DTO.Request;
 using APICore.Common.DTO.Response;
 using APICore.Services;
-using AutoMapper;
+using APICore.API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,9 +15,9 @@ namespace APICore.API.Controllers
     public class SettingController : Controller
     {
         private readonly ISettingService _settingService;
-        private readonly IMapper _mapper;
+        private readonly IAppMapper _mapper;
 
-        public SettingController(ISettingService settingService, IMapper mapper)
+        public SettingController(ISettingService settingService, IAppMapper mapper)
         {
             _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -37,7 +37,7 @@ namespace APICore.API.Controllers
         {
             var result = await _settingService.SetSettingAsync(setting);
 
-            var settingResponse = _mapper.Map<SettingResponse>(result);
+            var settingResponse = _mapper.Map(result);
             return Ok(new ApiOkResponse(settingResponse));
         }
 
