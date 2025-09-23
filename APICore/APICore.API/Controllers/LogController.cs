@@ -52,7 +52,7 @@ namespace APICore.API.Controllers
 
             var result = await _logService.GetPaginatedListAsync(totalResults, pag, perPag);
 
-            HttpContext.Response.Headers.Add("PagingData", JsonConvert.SerializeObject(result.GetPaginationData));
+            HttpContext.Response.Headers["PagingData"] = JsonConvert.SerializeObject(result.GetPaginationData);
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 
@@ -90,7 +90,7 @@ namespace APICore.API.Controllers
 
             var result = await _logService.GetPaginatedListAsync(totalResults, pag, perPag);
 
-            HttpContext.Response.Headers.Add("PagingData", JsonConvert.SerializeObject(result.GetPaginationData));
+            HttpContext.Response.Headers["PagingData"] = JsonConvert.SerializeObject(result.GetPaginationData);
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 
@@ -126,7 +126,7 @@ namespace APICore.API.Controllers
 
             var result = await _logService.GetPaginatedListAsync(totalResults, pag, perPag);
 
-            HttpContext.Response.Headers.Add("PagingData", JsonConvert.SerializeObject(result.GetPaginationData));
+            HttpContext.Response.Headers["PagingData"] = JsonConvert.SerializeObject(result.GetPaginationData);
             HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "PagingData";
             HttpContext.Response.Headers["Access-Control-Allow-Headers"] = "PagingData";
 

@@ -36,7 +36,8 @@ namespace APICore.Tests.Integration.Account
                                                    .Options;
             Config = new Mock<IConfiguration>();
             Config.Setup(setup => setup.GetSection("BearerTokens")["Issuer"]).Returns(@"http://apicore.com");
-            Config.Setup(setup => setup.GetSection("BearerTokens")["Key"]).Returns(@"GUID-A54a-SS15-SwEr-opo4-56YH");
+            // Use a test key with sufficient length (>= 32 chars) for HS256
+            Config.Setup(setup => setup.GetSection("BearerTokens")["Key"]).Returns(@"very-long-test-key-that-is-at-least-32-chars!!!");
             Config.Setup(setup => setup.GetSection("BearerTokens")["Audience"]).Returns(@"Any");
             Config.Setup(setup => setup.GetSection("BearerTokens")["AccessTokenExpirationHours"]).Returns("7");
             Config.Setup(setup => setup.GetSection("BearerTokens")["RefreshTokenExpirationHours"]).Returns("60");
@@ -70,8 +71,8 @@ namespace APICore.Tests.Integration.Account
             }
         }
 
-        [Fact(DisplayName = "Successfully Login Should Return Ok Status Code (200)")]
-        public void SuccessfullyLoginShouldReturnOk()
+    [Fact(DisplayName = "Successfully Login Should Return Ok Status Code (200)")]
+    public async Task SuccessfullyLoginShouldReturnOk()
         {
             // ARRANGE
             var fakeLoginRequest = new LoginRequest
@@ -93,14 +94,14 @@ namespace APICore.Tests.Integration.Account
             };
 
             // ACT
-            var taskResult = (ObjectResult)accountController.Login(fakeLoginRequest).Result;
+            var taskResult = (ObjectResult)await accountController.Login(fakeLoginRequest);
 
             // ASSERT
             Assert.Equal(200, taskResult.StatusCode);
         }
 
-        [Fact(DisplayName = "Empty Email On Login Should Return Not Found Exception")]
-        public void EmptyEmailOnLoginShouldReturnBadRequestException()
+    [Fact(DisplayName = "Empty Email On Login Should Return Not Found Exception")]
+    public async Task EmptyEmailOnLoginShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeLoginRequest = new LoginRequest
@@ -122,15 +123,11 @@ namespace APICore.Tests.Integration.Account
             };
 
             // ACT
-            var aggregateException = accountController.Login(fakeLoginRequest).Exception;
-            var taskResult = (BaseNotFoundException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(404, taskResult.HttpCode);
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.UserNotFoundException>(() => accountController.Login(fakeLoginRequest));
         }
 
-        [Fact(DisplayName = "Wrong Password Should Return Unauthorized Exception")]
-        public void WrongPasswordShouldReturnUnauthorizedException()
+    [Fact(DisplayName = "Wrong Password Should Return Unauthorized Exception")]
+    public async Task WrongPasswordShouldReturnUnauthorizedException()
         {
             // ARRANGE
             var fakeLoginRequest = new LoginRequest
@@ -152,11 +149,7 @@ namespace APICore.Tests.Integration.Account
             };
 
             // ACT
-            var aggregateException = accountController.Login(fakeLoginRequest).Exception;
-            var taskResult = (BaseUnauthorizedException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(401, taskResult.HttpCode);
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.UnauthorizedException>(() => accountController.Login(fakeLoginRequest));
         }
     }
 }

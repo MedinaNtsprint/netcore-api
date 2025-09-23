@@ -37,7 +37,8 @@ namespace APICore.Tests.Integration.Account
                                                    .Options;
             Config = new Mock<IConfiguration>();
             Config.Setup(setup => setup.GetSection("BearerTokens")["Issuer"]).Returns(@"http://apicore.com");
-            Config.Setup(setup => setup.GetSection("BearerTokens")["Key"]).Returns(@"GUID-A54a-SS15-SwEr-opo4-56YH");
+            // Use a test key with sufficient length (>= 32 chars) for HS256
+            Config.Setup(setup => setup.GetSection("BearerTokens")["Key"]).Returns(@"very-long-test-key-that-is-at-least-32-chars!!!");
             Config.Setup(setup => setup.GetSection("BearerTokens")["Audience"]).Returns(@"Any");
             Config.Setup(setup => setup.GetSection("BearerTokens")["AccessTokenExpirationHours"]).Returns("7");
             Config.Setup(setup => setup.GetSection("BearerTokens")["RefreshTokenExpirationHours"]).Returns("60");
@@ -65,7 +66,7 @@ namespace APICore.Tests.Integration.Account
                     Phone = "+53 12345678",
                     Password = @"gM3vIavHvte3fimrk2uVIIoAB//f2TmRuTy4IWwNWp0=",
                     Status = StatusEnum.ACTIVE,
-                    Identity = "someRandomIdentityString"
+                    Identity = "identity-4"
                 }, new User
                 {
                     Id = 5,
@@ -75,7 +76,7 @@ namespace APICore.Tests.Integration.Account
                     Phone = "+53 12345678",
                     Password = @"gM3vIavHvte3fimrk2uVIIoAB//f2TmRuTy4IWwNWp0=",
                     Status = StatusEnum.INACTIVE,
-                    Identity = "someRandomIdentityString"
+                    Identity = "identity-5"
                 });
 
                 await context.AddRangeAsync(new UserToken
@@ -94,8 +95,8 @@ namespace APICore.Tests.Integration.Account
             }
         }
 
-        [Fact(DisplayName = "Successfully Change Account Status Should Return Ok(200)")]
-        public void SuccessfullyChangeAccountStatusShouldReturnOk()
+    [Fact(DisplayName = "Successfully Change Account Status Should Return Ok(200)")]
+    public async Task SuccessfullyChangeAccountStatusShouldReturnOk()
         {
             // ARRANGE
             var fakeClaims = new List<Claim>()
@@ -108,7 +109,7 @@ namespace APICore.Tests.Integration.Account
             {
                 User = new ClaimsPrincipal(claimsPrincipal)
             };
-            httpContext.Request.Headers.Add("Authorization", @"Bearer s0m34cc$3$$T0k3n");
+            httpContext.Request.Headers["Authorization"] = @"Bearer s0m34cc$3$$T0k3n";
 
             using var context = new CoreDbContext(ContextOptions);
 
@@ -123,19 +124,19 @@ namespace APICore.Tests.Integration.Account
 
             var fakeChangeAccountStatus = new ChangeAccountStatusRequest
             {
-                Identity = "someRandomIdentityString",
+                Identity = "identity-4",
                 Active = true
             };
 
             // ACT
-            var taskResult = (OkResult)accountController.ChangeAccountStatus(fakeChangeAccountStatus).Result;
+            var taskResult = (OkResult)await accountController.ChangeAccountStatus(fakeChangeAccountStatus);
 
             // ASSERT
             Assert.Equal(200, taskResult.StatusCode);
         }
 
-        [Fact(DisplayName = "Inactive User Change Account Status Himself Should Return Forbidden Exception (403)")]
-        public void InactiveUserChangeAccountStatusHimselfShouldReturnForbiddenException()
+    [Fact(DisplayName = "Inactive User Change Account Status Himself Should Return Forbidden Exception (403)")]
+    public async Task InactiveUserChangeAccountStatusHimselfShouldReturnForbiddenException()
         {
             // ARRANGE
             var fakeClaims = new List<Claim>()
@@ -148,7 +149,7 @@ namespace APICore.Tests.Integration.Account
             {
                 User = new ClaimsPrincipal(claimsPrincipal)
             };
-            httpContext.Request.Headers.Add("Authorization", @"Bearer s0m34cc$3$$T0k3n");
+            httpContext.Request.Headers["Authorization"] = @"Bearer s0m34cc$3$$T0k3n";
 
             using var context = new CoreDbContext(ContextOptions);
 
@@ -163,16 +164,12 @@ namespace APICore.Tests.Integration.Account
 
             var fakeChangeAccountStatus = new ChangeAccountStatusRequest
             {
-                Identity = "someRandomIdentityString",
+                Identity = "identity-5",
                 Active = true
             };
 
             // ACT
-            var aggregateException = accountController.ChangeAccountStatus(fakeChangeAccountStatus).Exception;
-            var taskResult = (BaseForbiddenException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(403, taskResult.HttpCode);
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.AccountDeactivatedForbiddenException>(() => accountController.ChangeAccountStatus(fakeChangeAccountStatus));
         }
     }
 }

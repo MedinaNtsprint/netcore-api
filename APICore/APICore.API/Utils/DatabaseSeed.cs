@@ -27,7 +27,7 @@ namespace APICore.API.Utils
 
             if (admin == null)
             {
-                using (var hashAlgorithm = new SHA256CryptoServiceProvider())
+                using (var hashAlgorithm = System.Security.Cryptography.SHA256.Create())
                 {
                     var byteValue = Encoding.UTF8.GetBytes("P@sssw0rd");
                     var byteHash = hashAlgorithm.ComputeHash(byteValue);

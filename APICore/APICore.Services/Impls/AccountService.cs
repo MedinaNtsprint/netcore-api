@@ -274,7 +274,7 @@ namespace APICore.Services.Impls
 
         private string GetSha256Hash(string input)
         {
-            using (var hashAlgorithm = new SHA256CryptoServiceProvider())
+            using (var hashAlgorithm = System.Security.Cryptography.SHA256.Create())
             {
                 var byteValue = Encoding.UTF8.GetBytes(input);
                 var byteHash = hashAlgorithm.ComputeHash(byteValue);

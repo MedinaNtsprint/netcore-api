@@ -56,8 +56,8 @@ namespace APICore.Tests.Integration.Account
             }
         }
 
-        [Fact(DisplayName = "Successfully Register Should Return Created Status Code (201)")]
-        public void SuccessfullyRegisterShouldReturnCreated()
+    [Fact(DisplayName = "Successfully Register Should Return Created Status Code (201)")]
+    public async Task SuccessfullyRegisterShouldReturnCreated()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -76,14 +76,14 @@ namespace APICore.Tests.Integration.Account
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
             // ACT
-            var taskResult = (ObjectResult)accountController.Register(fakeUserRequest).Result;
+            var taskResult = (ObjectResult)await accountController.Register(fakeUserRequest);
 
             // ASSERT
             Assert.Equal(201, taskResult.StatusCode);
         }
 
-        [Fact(DisplayName = "Empty Email Should Return Bad Request Exception")]
-        public void EmptyEmailShouldReturnBadRequestException()
+    [Fact(DisplayName = "Empty Email Should Return Bad Request Exception")]
+    public async Task EmptyEmailShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -101,16 +101,12 @@ namespace APICore.Tests.Integration.Account
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
-            // ACT
-            var aggregateException = accountController.Register(fakeUserRequest).Exception;
-            var taskResult = (BaseBadRequestException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(400, taskResult.HttpCode);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.EmptyEmailBadRequestException>(() => accountController.Register(fakeUserRequest));
         }
 
-        [Fact(DisplayName = "Email In Use Should Return Bad Request Exception")]
-        public void EmailInUseShouldReturnBadRequestException()
+    [Fact(DisplayName = "Email In Use Should Return Bad Request Exception")]
+    public async Task EmailInUseShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -122,16 +118,12 @@ namespace APICore.Tests.Integration.Account
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
-            // ACT
-            var aggregateException = accountController.Register(fakeUserRequest).Exception;
-            var taskResult = (BaseBadRequestException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(400, taskResult.HttpCode);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.EmailInUseBadRequestException>(() => accountController.Register(fakeUserRequest));
         }
 
-        [Fact(DisplayName = "Empty Password Should Return Bad Request Exception")]
-        public void EmptyPasswordShouldReturnBadRequestException()
+    [Fact(DisplayName = "Empty Password Should Return Bad Request Exception")]
+    public async Task EmptyPasswordShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -149,16 +141,12 @@ namespace APICore.Tests.Integration.Account
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
-            // ACT
-            var aggregateException = accountController.Register(fakeUserRequest).Exception;
-            var taskResult = (BaseBadRequestException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(400, taskResult.HttpCode);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordRequirementsBadRequestException>(() => accountController.Register(fakeUserRequest));
         }
 
-        [Fact(DisplayName = "Small Password Should Return Bad Request Exception")]
-        public void SmallPasswordShouldReturnBadRequestException()
+    [Fact(DisplayName = "Small Password Should Return Bad Request Exception")]
+    public async Task SmallPasswordShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -176,16 +164,12 @@ namespace APICore.Tests.Integration.Account
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
-            // ACT
-            var aggregateException = accountController.Register(fakeUserRequest).Exception;
-            var taskResult = (BaseBadRequestException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(400, taskResult.HttpCode);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordRequirementsBadRequestException>(() => accountController.Register(fakeUserRequest));
         }
 
-        [Fact(DisplayName = "Passwords Doesn't Match Should Return Bad Request Exception")]
-        public void PasswordDoesntMatchShouldReturnBadRequestException()
+    [Fact(DisplayName = "Passwords Doesn't Match Should Return Bad Request Exception")]
+    public async Task PasswordDoesntMatchShouldReturnBadRequestException()
         {
             // ARRANGE
             var fakeUserRequest = new SignUpRequest
@@ -203,12 +187,8 @@ namespace APICore.Tests.Integration.Account
             var accountService = new AccountService(new Mock<IConfiguration>().Object, new UnitOfWork(context), new Mock<IStringLocalizer<IAccountService>>().Object, new Mock<IDetectionService>().Object, storageService);
             var accountController = new AccountController(accountService, new Mock<AutoMapper.IMapper>().Object, new Mock<IEmailService>().Object, new Mock<IWebHostEnvironment>().Object);
 
-            // ACT
-            var aggregateException = accountController.Register(fakeUserRequest).Exception;
-            var taskResult = (BaseBadRequestException)aggregateException?.InnerException;
-
-            // ASSERT
-            if (taskResult != null) Assert.Equal(400, taskResult.HttpCode);
+            // ACT & ASSERT
+            await Assert.ThrowsAsync<APICore.Services.Exceptions.PasswordsDoesntMatchBadRequestException>(() => accountController.Register(fakeUserRequest));
         }
     }
 }
