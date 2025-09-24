@@ -11,8 +11,5 @@ namespace APICore.Common.DTO.Request
         DateTime? Birthday,
         string Phone,
         [property: Required] int Gender
-    )
-    {
-        public SignUpRequest() : this(default!, default!, default!, default!, default, default!, default) { }
-    };
+    );
 }
