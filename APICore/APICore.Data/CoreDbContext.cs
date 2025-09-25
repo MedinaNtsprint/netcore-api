@@ -33,7 +33,6 @@ namespace APICore.Data
                 entity.Property(e => e.AvatarMimeType).HasMaxLength(100);
                 
                 // Configure enums to be stored as strings (more readable in DB)
-                entity.Property(e => e.Gender).HasConversion<string>().HasMaxLength(10);
                 entity.Property(e => e.Status).HasConversion<string>().HasMaxLength(10);
                 
                 // Create unique index on Email for performance and uniqueness

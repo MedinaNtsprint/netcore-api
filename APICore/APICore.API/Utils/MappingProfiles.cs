@@ -14,11 +14,8 @@ namespace APICore.API.Utils
             CreateMap<User, UserResponse>()
                 .ConstructUsing(source => new UserResponse(
                     source.Id,
-                    source.BirthDate,
                     source.FullName,
                     source.Identity,
-                    (int)source.Gender,
-                    source.Gender.ToString(),
                     source.Email,
                     source.Phone,
                     (int)source.Status,

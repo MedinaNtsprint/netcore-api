@@ -39,7 +39,8 @@ namespace APICore.API.Utils
                         Password = Convert.ToBase64String(byteHash),
                         CreatedAt = DateTime.UtcNow,
                         ModifiedAt = DateTime.UtcNow,
-                        Status = StatusEnum.ACTIVE
+                        Status = StatusEnum.ACTIVE,
+                        Identity = $"USR-{Guid.NewGuid().ToString("N").Substring(0, 8)}"
                     };
 
                     await uow.UserRepository.AddAsync(admin);

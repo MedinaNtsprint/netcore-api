@@ -21,11 +21,8 @@ namespace APICore.API.Mappers
             if (user == null) return null;
             return new UserResponse(
                 user.Id,
-                user.BirthDate,
                 user.FullName,
                 user.Identity,
-                (int)user.Gender,
-                user.Gender.ToString(),
                 user.Email,
                 user.Phone,
                 (int)user.Status,

@@ -245,12 +245,10 @@ namespace APICore.Services.Impls
             {
                 Email = suRequest.Email,
                 FullName = suRequest.FullName,
-                BirthDate = suRequest.Birthday ?? DateTime.UtcNow,
                 Phone = suRequest.Phone,
                 Password = passwordHash,
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
-                Gender = (GenderEnum)suRequest.Gender,
                 Identity = Suid.NewLettersOnlySuid(),
                 Status = StatusEnum.ACTIVE //TODO: the validation is missing now. Fix this once we have the validation process in place.
             };
@@ -351,8 +349,6 @@ namespace APICore.Services.Impls
                 new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email, issuer),
                 new Claim(ClaimTypes.AuthenticationMethod, "bearer", ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.NameIdentifier, user.FullName, ClaimValueTypes.String, issuer),
-                new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToString(), ClaimValueTypes.Date, issuer),
-                new Claim(ClaimTypes.Gender, user.Gender.ToString(), ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.UserData, user.Id.ToString(), ClaimValueTypes.String, issuer)
             };
             return claims;
@@ -425,10 +421,8 @@ namespace APICore.Services.Impls
             }
 
             user.FullName = updateProfile.FullName;
-            user.BirthDate = updateProfile.Birthday ?? user.BirthDate;
             user.Phone = updateProfile.Phone;
             user.ModifiedAt = DateTime.UtcNow;
-            user.Gender = (GenderEnum)updateProfile.Gender;
 
             _uow.UserRepository.Update(user);
 
