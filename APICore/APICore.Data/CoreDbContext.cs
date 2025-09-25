@@ -14,20 +14,24 @@ namespace APICore.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Setting> Setting { get; set; }
-        public DbSet<Log> Log { get; set; }
+        // Use plural names for DbSet to follow common conventions
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var currentDate = DateTime.Now;
+            ApplyAuditableEntityRules();
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
-            var currentChanges = ChangeTracker.Entries<BaseEntity>();
-            var currentChangedList = currentChanges.ToList();
+        private void ApplyAuditableEntityRules()
+        {
+            var currentDate = DateTime.UtcNow; // prefer UTC for timestamps
 
-            foreach (var entry in currentChangedList)
+            var entries = ChangeTracker.Entries<BaseEntity>().ToList();
+
+            foreach (var entry in entries)
             {
-                var entity = entry.Entity;
-
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -36,25 +40,24 @@ namespace APICore.Data
                         break;
 
                     case EntityState.Modified:
+                        // Don't overwrite CreatedAt on update - preserve original value
                         entry.Entity.ModifiedAt = currentDate;
-                        entry.Entity.CreatedAt = entry.OriginalValues.GetValue<DateTime>("CreatedAt");
+                        if (entry.OriginalValues.TryGetValue<DateTime>("CreatedAt", out var originalCreatedAt))
+                        {
+                            entry.Entity.CreatedAt = originalCreatedAt;
+                        }
                         break;
 
                     case EntityState.Detached:
-                        break;
-
                     case EntityState.Deleted:
-                        break;
-
                     case EntityState.Unchanged:
+                        // no-op
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
-
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
