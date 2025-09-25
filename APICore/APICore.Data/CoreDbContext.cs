@@ -100,8 +100,8 @@ namespace APICore.Data
                 if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
                 {
                     // Ensure CreatedAt and ModifiedAt are required and have proper precision
-                    entityType.FindProperty(nameof(BaseEntity.CreatedAt))?.SetColumnType("datetime2");
-                    entityType.FindProperty(nameof(BaseEntity.ModifiedAt))?.SetColumnType("datetime2");
+                    entityType.FindProperty(nameof(BaseEntity.CreatedAt))?.SetColumnType("datetime");
+                    entityType.FindProperty(nameof(BaseEntity.ModifiedAt))?.SetColumnType("datetime");
                 }
             }
 
