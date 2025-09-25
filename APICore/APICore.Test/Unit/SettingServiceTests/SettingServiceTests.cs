@@ -38,7 +38,7 @@ namespace APICore.Test.Unit.SettingServiceTests
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
 
-            await context.Setting.AddRangeAsync(new Setting
+            await context.Settings.AddRangeAsync(new Setting
             {
                 Key = "TestKey1",
                 Value = "1"
@@ -114,7 +114,7 @@ namespace APICore.Test.Unit.SettingServiceTests
             await service.SetSettingAsync(request);
 
             // Assert
-            var created = await context.Setting.AnyAsync(setting => setting.Key == key && setting.Value == value);
+            var created = await context.Settings.AnyAsync(setting => setting.Key == key && setting.Value == value);
             Assert.True(created);
         }
 
@@ -142,7 +142,7 @@ namespace APICore.Test.Unit.SettingServiceTests
             await service.SetSettingAsync(request);
 
             // Assert
-            var currentEntry = await context.Setting.FirstAsync(setting => setting.Key == existingKey);
+            var currentEntry = await context.Settings.FirstAsync(setting => setting.Key == existingKey);
 
             Assert.Equal(newValue, currentEntry.Value);
             Assert.NotEqual(existingValue, currentEntry.Value);

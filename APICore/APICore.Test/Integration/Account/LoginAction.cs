@@ -61,7 +61,6 @@ namespace APICore.Tests.Integration.Account
                     Id = 1,
                     Email = "carlos@itguy.com",
                     FullName = "Carlos Delgado",
-                    Gender = 0,
                     Phone = "+53 12345678",
                     Password = @"gM3vIavHvte3fimrk2uVIIoAB//f2TmRuTy4IWwNWp0=",
                     Status = StatusEnum.ACTIVE

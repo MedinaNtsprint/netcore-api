@@ -144,7 +144,7 @@ namespace APICore.API.Controllers
         /// Update Profile. Requires authentication.
         /// </summary>
         /// <param name="updateProfile">
-        /// Update Profile request object. Include fullname, gender and birthday.
+        /// Update Profile request object. Include fullname.
         /// </param>
         [Authorize]
         [HttpPost("update-profile")]

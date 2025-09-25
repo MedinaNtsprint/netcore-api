@@ -31,10 +31,10 @@ namespace APICore.Data
                 entity.Property(e => e.Password).IsRequired().HasMaxLength(500); // Hash can be long
                 entity.Property(e => e.Avatar).HasMaxLength(500);
                 entity.Property(e => e.AvatarMimeType).HasMaxLength(100);
-                
+
                 // Configure enums to be stored as strings (more readable in DB)
                 entity.Property(e => e.Status).HasConversion<string>().HasMaxLength(10);
-                
+
                 // Create unique index on Email for performance and uniqueness
                 entity.HasIndex(e => e.Email).IsUnique();
                 entity.HasIndex(e => e.Identity).IsUnique();
@@ -54,13 +54,13 @@ namespace APICore.Data
                 entity.Property(e => e.ClientName).HasMaxLength(100);
                 entity.Property(e => e.ClientType).HasMaxLength(50);
                 entity.Property(e => e.ClientVersion).HasMaxLength(50);
-                
+
                 // Configure foreign key relationship
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserTokens)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
-                
+
                 // Index on UserId for performance
                 entity.HasIndex(e => e.UserId);
             });
@@ -71,7 +71,7 @@ namespace APICore.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Key).IsRequired().HasMaxLength(200);
                 entity.Property(e => e.Value).HasMaxLength(2000); // Allow longer values
-                
+
                 // Create unique index on Key to prevent duplicate settings
                 entity.HasIndex(e => e.Key).IsUnique();
             });
@@ -83,11 +83,11 @@ namespace APICore.Data
                 entity.Property(e => e.Description).HasMaxLength(2000);
                 entity.Property(e => e.App).HasMaxLength(100);
                 entity.Property(e => e.Module).HasMaxLength(100);
-                
+
                 // Configure enums to be stored as strings
                 entity.Property(e => e.EventType).HasConversion<string>().HasMaxLength(50);
                 entity.Property(e => e.LogType).HasConversion<string>().HasMaxLength(50);
-                
+
                 // Index on CreatedAt for performance (logs are often queried by date)
                 entity.HasIndex(e => e.CreatedAt);
                 entity.HasIndex(e => e.UserId);
@@ -99,8 +99,18 @@ namespace APICore.Data
                 if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
                 {
                     // Ensure CreatedAt and ModifiedAt are required and have proper precision
-                    entityType.FindProperty(nameof(BaseEntity.CreatedAt))?.SetColumnType("datetime");
-                    entityType.FindProperty(nameof(BaseEntity.ModifiedAt))?.SetColumnType("datetime");
+                    var createdAtProperty = entityType.FindProperty(nameof(BaseEntity.CreatedAt));
+                    var modifiedAtProperty = entityType.FindProperty(nameof(BaseEntity.ModifiedAt));
+
+                    if (createdAtProperty != null)
+                    {
+                        createdAtProperty.SetColumnType("timestamp with time zone");
+                    }
+
+                    if (modifiedAtProperty != null)
+                    {
+                        modifiedAtProperty.SetColumnType("timestamp with time zone");
+                    }
                 }
             }
 

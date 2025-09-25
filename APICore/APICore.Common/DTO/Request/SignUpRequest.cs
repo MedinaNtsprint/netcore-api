@@ -8,8 +8,6 @@ namespace APICore.Common.DTO.Request
         [property: Required][property: MinLength(6)] string Password,
         [property: Compare("Password", ErrorMessage = "The password and confirmation password do not match.")] string ConfirmationPassword,
         [property: Required][property: EmailAddress] string Email,
-        DateTime? Birthday,
-        string Phone,
-        [property: Required] int Gender
+        string Phone
     );
 }

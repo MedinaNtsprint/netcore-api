@@ -25,12 +25,9 @@ namespace APICore.API
         {
             services.AddDbContextPool<CoreDbContext>(
                 dbContextOptions => dbContextOptions
-                    .UseMySql(
+                    .UseNpgsql(
                         // Replace with your connection string.
-                        config.GetConnectionString("ApiConnection"),
-                        // Replace with your server version and type. Use MariaDbServerVersion for MariaDB.
-                        new MySqlServerVersion(new Version(8, 0, 21))
-                     //Consider to use a specific charset according with your needs in your modelbuilder inside your context
+                        config.GetConnectionString("ApiConnection")
                      )
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
@@ -179,7 +176,7 @@ namespace APICore.API
         public static void ConfigureHealthChecks(this IServiceCollection services, IConfiguration config)
         {
             services.AddHealthChecks()
-                   .AddMySql(config.GetConnectionString("ApiConnection"));
+                   .AddNpgSql(config.GetConnectionString("ApiConnection"));
         }
 
         public static void ConfigureDetection(this IServiceCollection services)

@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "ApiConnection": "Server=[YOUR_SERVER];Database=[YOUR_DATABASE];User Id=[YOUR_USERNAME];Password=[YOUR_PASWORD];",
+    "ApiConnection": "Host=[YOUR_SERVER];Database=[YOUR_DATABASE];Username=[YOUR_USERNAME];Password=[YOUR_PASSWORD];",
     "Azure": "DefaultEndpointsProtocol=https;AccountName=[YOUR_ACCOUNT_NAME];AccountKey=[YOUR_ACCOUNT_KEY];BlobEndpoint=[ROOT_PATH];"
   },
 

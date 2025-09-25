@@ -46,7 +46,6 @@ namespace APICore.Tests.Integration.Account
                     Id = 3,
                     Email = "pepe@itguy.com",
                     FullName = "Pepe Delgado",
-                    Gender = 0,
                     Phone = "+53 12345678",
                     Password = @"gM3vIavHvte3fimrk2uVIIoAB//f2TmRuTy4IWwNWp0=",
                     Status = StatusEnum.ACTIVE
@@ -65,9 +64,7 @@ namespace APICore.Tests.Integration.Account
                 Password: @"S3cretP@$$",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: @"carlos@itguy.com",
-                Birthday: DateTime.Now,
-                Phone: "+53 12345678",
-                Gender: 0
+                Phone: "+53 12345678"
             );
 
             using var context = new CoreDbContext(ContextOptions);
@@ -90,9 +87,7 @@ namespace APICore.Tests.Integration.Account
                 Password: @"S3cretP@$$",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: "",
-                Birthday: DateTime.Now,
-                Phone: "+53 12345678",
-                Gender: 0
+                Phone: "+53 12345678"
             );
 
             using var context = new CoreDbContext(ContextOptions);
@@ -112,9 +107,7 @@ namespace APICore.Tests.Integration.Account
                 Password: @"S3cretP@$$",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: "pepe@itguy.com",
-                Birthday: DateTime.Now,
-                Phone: "+53 00000000",
-                Gender: 0
+                Phone: "+53 00000000"
             );
 
             using var context = new CoreDbContext(ContextOptions);
@@ -134,9 +127,7 @@ namespace APICore.Tests.Integration.Account
                 Password: "",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: @"pepe2@itguy.com",
-                Birthday: DateTime.Now,
-                Phone: "+53 12345678",
-                Gender: 0
+                Phone: "+53 12345678"
             );
 
             using var context = new CoreDbContext(ContextOptions);
@@ -156,9 +147,7 @@ namespace APICore.Tests.Integration.Account
                 Password: "S3cr",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: "pepe2@itguy.com",
-                Birthday: DateTime.Now,
-                Phone: "+53 12345678",
-                Gender: 0
+                Phone: "+53 12345678"
             );
 
             using var context = new CoreDbContext(ContextOptions);
@@ -178,9 +167,7 @@ namespace APICore.Tests.Integration.Account
                 Password: @"Z3cretP@$$",
                 ConfirmationPassword: @"S3cretP@$$",
                 Email: "pepe2@itguy.com",
-                Birthday: DateTime.Now,
-                Phone: "+53 12345678",
-                Gender: 0
+                Phone: "+53 12345678"
             );
 
             using var context = new CoreDbContext(ContextOptions);
