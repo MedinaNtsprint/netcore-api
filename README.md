@@ -1,4 +1,4 @@
-# NET 7 API
+# NET 8 API
 
 [![Continuous Integration](https://github.com/techsavyntsprint/netcore-api/workflows/CI/badge.svg)](https://github.com/techsavyntsprint/netcore-api/actions)
 
@@ -32,7 +32,7 @@ dotnet build "APICore.sln" -c Debug
 ```
 
 `````markdown
-# NET 7 API / APICore (.NET)
+# NET 8 API / APICore (.NET)
 
 [![Continuous Integration](https://github.com/techsavyntsprint/netcore-api/workflows/CI/badge.svg)](https://github.com/techsavyntsprint/netcore-api/actions)
 
